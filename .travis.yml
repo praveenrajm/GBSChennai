@@ -1,4 +1,8 @@
 language: java
 before_install: cd GBSProject
+
 #install: gradle assemble
 #script: gradle test
+
+install: gradle build
+script: gradle check
