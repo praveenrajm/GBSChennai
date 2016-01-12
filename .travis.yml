@@ -1,8 +1,8 @@
 language: java
 before_install: 
- - wget http://downloads.gradle.org/distributions/gradle:2.0.0-all.zip
- - unzip -q -o gradle:2.0.0-all.zip
- - export PATH="${BASEDIR}/gradle:2.0.0/bin:${PATH}"
+ - wget https://services.gradle.org/distributions/gradle-2.4-all.zip
+ - unzip -q -o gradle-2.4-all.zip
+ - export PATH="${BASEDIR}/gradle:2.4/bin:${PATH}"
  - cd VoxxyTwitter
 
 #install: gradle assemble
