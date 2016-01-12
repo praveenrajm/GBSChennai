@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo.xsd">
+
+    <context:property-placeholder location="classpath:database.properties"/>
+    <context:component-scan base-package="com.identv.voxxy" >
+  <!--  <context:exclude-filter type="annotation" expression="org.springframework.context.annotation.Configuration"/>-->
+    </context:component-scan>
+
+    <context:annotation-config/>
+
+    <mongo:mongo replica-set="@ds039615-a0.mongolab.com:39615,ds039615-a1.mongolab.com:39615">
+        <mongo:options
+                connections-per-host="10"
+                threads-allowed-to-block-for-connection-multiplier="5"
+                connect-timeout="1000"
+                max-wait-time="5000"
+                slave-ok="true"
+                write-number="1"
+                write-timeout="0"
+                write-fsync="false"/>
+    </mongo:mongo>
+
+    <bean id="mongoCredentials" class="org.springframework.data.authentication.UserCredentials">
+        <constructor-arg name="username" value="${mongo.user}" />
+        <constructor-arg name="password" value="${mongo.pass}" />
+    </bean>
+
+    <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+        <constructor-arg name="mongo" ref="mongo"/>
+        <constructor-arg name="databaseName" value="${mongo.db}"/>
+        <constructor-arg name="userCredentials" ref="mongoCredentials"/>
+        <property name="writeConcern" value="FSYNC_SAFE"/>
+    </bean>
+   <!-- <mongo:repositories base-package="com.identv.voxxy.repository" />-->
+    <bean id="userDao" class="com.identv.voxxy.dao.impl.UserDaoImpl">
+        <constructor-arg name="mongoTemplate" ref="mongoTemplate"/>
+    </bean>
+    <bean id="serviceKeyDao" class="com.identv.voxxy.dao.impl.ServiceKeyDaoImpl">
+        <constructor-arg name="mongoTemplate" ref="mongoTemplate"/>
+    </bean>
+    <bean id="restAuthenticator" class="com.identv.voxxy.common.utils.RestAuthenticator">
+        <constructor-arg name="userDao" ref="userDao"/>
+        <constructor-arg name="serviceKeyDao" ref="serviceKeyDao"/>
+    </bean>
+
+</beans>

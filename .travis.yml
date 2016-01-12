@@ -1,5 +1,5 @@
 language: java
-#before_install: cd GBSProject
+before_install: cd VoxxyTwitter
 
 #install: gradle assemble
 #script: gradle test
