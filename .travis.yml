@@ -1,5 +1,9 @@
 language: java
-before_install: cd VoxxyTwitter
+before_install: 
+ - wget http://downloads.gradle.org/distributions/gradle:2.0.0-all.zip
+ - unzip -q -o gradle:2.0.0-all.zip
+ - export PATH="${BASEDIR}/gradle:2.0.0/bin:${PATH}"
+ - cd VoxxyTwitter
 
 #install: gradle assemble
 #script: gradle test
