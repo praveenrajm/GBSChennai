@@ -1,5 +1,5 @@
 language: java
-before_install: cd GBSProject
+#before_install: cd GBSProject
 
 #install: gradle assemble
 #script: gradle test
